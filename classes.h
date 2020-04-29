@@ -104,12 +104,12 @@ class mesh{
         element *element_list;
         condition *dirichlet_list;
     public:
-        void setParameters(float l,float u_bar,float nu,float rho,float f){
+        void setParameters(float l,float t,float k,float lamd,float v,float psi, float a, float d,float n){
             parameters[ELEMENT_LENGTH]=l;
-            parameters[ADJECTIVE_VELOCITY]=u_bar;
-            parameters[DYNAMIC_VISCOSITY]=nu;
-            parameters[DENSITY]=rho;
-            parameters[EXTERNAL_FORCE]=f;
+            parameters[ADJECTIVE_VELOCITY]=t/4;
+            parameters[DYNAMIC_VISCOSITY]=k;
+            parameters[DENSITY]=d;
+            parameters[EXTERNAL_FORCE]=psi;
         }
         void setSizes(int nnodes,int neltos,int ndirich){
             sizes[NODES] = nnodes;

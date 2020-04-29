@@ -58,13 +58,12 @@ void leerMallayCondiciones(mesh &m){
     condition *dirichlet_p_list;
 
     do{
-        cout << "Ingrese el nombre del archivo que contiene los datos de la malla: ";
-        cin >> filename;
-        file.open(filename);
+        
+        file.open("problem.msh");
     }while(!file);
 
     
-    file >> l >> u_bar >> nu >> rho >> f;
+    file >> l >> u_bar >> nu >> rho >> f >> ;
     file >> nnodes >> neltos >> ndirich_u >> ndirich_p;
 
     
