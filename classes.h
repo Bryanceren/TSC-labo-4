@@ -1,6 +1,6 @@
 enum lines {NOLINE,SINGLELINE,DOUBLELINE};
 enum modes {NOMODE,INT_FLOAT,INT_INT_INT};
-enum parameters {ELEMENT_LENGTH,ADJECTIVE_VELOCITY,DYNAMIC_VISCOSITY,DENSITY,EXTERNAL_FORCE};
+enum parameters {ELEMENT_LENGTH,PARAM1,PARAM2,PARAM3,PARAM4,PARAM5,PARAM6,PARAM7,PARAM8};
 enum sizes {NODES,ELEMENTS,DIRICHLET};
 
 class item{
@@ -106,10 +106,15 @@ class mesh{
     public:
         void setParameters(float l,float t,float k,float lamd,float v,float psi, float a, float d,float n){
             parameters[ELEMENT_LENGTH]=l;
-            parameters[ADJECTIVE_VELOCITY]=t/4;
-            parameters[DYNAMIC_VISCOSITY]=k;
-            parameters[DENSITY]=d;
-            parameters[EXTERNAL_FORCE]=psi;
+            parameters[PARAM1]=t;
+            parameters[PARAM2]=k;
+            parameters[PARAM3]=lamd;
+            parameters[PARAM4]=v;
+            parameters[PARAM5]=psi;
+            parameters[PARAM6]=a;
+            parameters[PARAM7]=d;
+            parameters[PARAM8]=n;
+            
         }
         void setSizes(int nnodes,int neltos,int ndirich){
             sizes[NODES] = nnodes;

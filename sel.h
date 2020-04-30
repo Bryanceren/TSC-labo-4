@@ -1,23 +1,24 @@
 void createLocalA(Matrix &A,mesh m){
-    float u_bar = m.getParameter(ADJECTIVE_VELOCITY);
-    A.at(0).at(0) += -u_bar/2;  A.at(0).at(1) += u_bar/2;
-    A.at(1).at(0) += -u_bar/2;  A.at(1).at(1) += u_bar/2;
+    float t = m.getParameter(PARAM1);
+    A.at(0).at(0) += -t/8;  A.at(0).at(1) += t/8;
+    A.at(1).at(0) += -t/8;  A.at(1).at(1) += t/8;
 }
 
 void createLocalB(Matrix &B,mesh m){
     float l = m.getParameter(ELEMENT_LENGTH);
-    float nu = m.getParameter(DYNAMIC_VISCOSITY);
-    B.at(0).at(0) += nu/l;      B.at(0).at(1) += -nu/l;
-    B.at(1).at(0) += -nu/l;     B.at(1).at(1) += nu/l;
+    float k = m.getParameter(PARAM2);
+    B.at(0).at(0) += k/l;      B.at(0).at(1) += -k/l;
+    B.at(1).at(0) += -k/l;     B.at(1).at(1) += k/l;
 }
 
 void createLocalC(Matrix &C,mesh m){
-    float rho = m.getParameter(DENSITY);
-    C.at(0).at(0) += -1/(2*rho);    C.at(0).at(1) += 1/(2*rho);
-    C.at(1).at(0) += -1/(2*rho);    C.at(1).at(1) += 1/(2*rho);
+    float lam = m.getParameter(PARAM3);
+    C.at(0).at(0) += -(2*lam)/6;    C.at(0).at(1) += (2*lam)/6;
+    C.at(1).at(0) += -(2*lam)/6;    C.at(1).at(1) += (2*lam)/6;
 }
 
 void createLocalD(Matrix &D,mesh m){
+    float v = m.getParameter(PARAM4);
     D.at(0).at(0) += -0.5;  D.at(0).at(1) += 0.5;
     D.at(1).at(0) += -0.5;  D.at(1).at(1) += 0.5;
 }
