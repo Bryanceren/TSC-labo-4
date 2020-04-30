@@ -98,7 +98,7 @@ class condition: public item{
 };
 
 class mesh{
-        float parameters[5];
+        float parameters[9];
         int sizes[3];
         node *node_list;
         element *element_list;

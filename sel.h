@@ -18,45 +18,80 @@ void createLocalC(Matrix &C,mesh m){
 }
 
 void createLocalD(Matrix &D,mesh m){
+    float l = m.getParameter(ELEMENT_LENGTH);
     float v = m.getParameter(PARAM4);
-    D.at(0).at(0) += -0.5;  D.at(0).at(1) += 0.5;
-    D.at(1).at(0) += -0.5;  D.at(1).at(1) += 0.5;
+    D.at(0).at(0) += v/l;  D.at(0).at(1) += -v/l;
+    D.at(1).at(0) += -v/l;  D.at(1).at(1) += v/l;
 }
 
+void createLocalE(Matrix &E,mesh m){
+    float a = m.getParameter(PARAM6);
+    E.at(0).at(0) += -3*a/2;  E.at(0).at(1) += 3*a/2;
+    E.at(1).at(0) += -3*a/2;  E.at(1).at(1) += 3*a/2;
+}
+
+void createLocalF(Matrix &F,mesh m){
+    float d = m.getParameter(PARAM7);
+    F.at(0).at(0) += -d/2;  F.at(0).at(1) += d/2;
+    F.at(1).at(0) += -d/2;  F.at(1).at(1) += d/2;
+
+}
+
+
+Vector createLocalb(int element,mesh &m){
+    Vector b;
+
+    float psi = m.getParameter(PARAM5);
+    float l = m.getParameter(ELEMENT_LENGTH);
+    float n = m.getParameter(PARAM8);
+    
+    b.push_back(psi*l/2); 
+    b.push_back(psi*l/2); 
+    b.push_back(n*l/2); 
+    b.push_back(n*l/2);
+
+    return b;
+}
+
+
 Matrix createLocalK(int element,mesh &m){
-    Matrix K,A,B,C,D;
+    Matrix K,A,B,C,D,E,F;
 
     zeroes(A,2);
     zeroes(B,2);
     zeroes(C,2);
     zeroes(D,2);
+    zeroes(E,2);
+    zeroes(F,2);
     createLocalA(A,m);
     createLocalB(B,m);
     createLocalC(C,m);
     createLocalD(D,m);
+    createLocalE(E,m);
+    createLocalF(F,m);
 
-    Vector row1, row2, row3, row4;
+    Vector row1, row2, row3, row4, row5, row6;
 
 
     row1.push_back(A.at(0).at(0)+B.at(0).at(0)); 
     row1.push_back(A.at(0).at(1)+B.at(0).at(1));
-    row1.push_back(C.at(0).at(0));                  
-    row1.push_back(C.at(0).at(1));
+    row1.push_back(C.at(0).at(0)+D.at(0).at(0));                  
+    row1.push_back(C.at(0).at(1)+D.at(0).at(1));
 
     row2.push_back(A.at(1).at(0)+B.at(1).at(0)); 
     row2.push_back(A.at(1).at(1)+B.at(1).at(1));
-    row2.push_back(C.at(1).at(0)); 
-    row2.push_back(C.at(1).at(1));
+    row2.push_back(C.at(1).at(0)+D.at(1).at(0)); 
+    row2.push_back(C.at(1).at(1)+D.at(1).at(1));
 
-    row3.push_back(D.at(0).at(0)); 
-    row3.push_back(D.at(0).at(1));
-    row3.push_back(0); 
-    row3.push_back(0);
+    row3.push_back(E.at(0).at(0)); 
+    row3.push_back(E.at(0).at(1));
+    row3.push_back(F.at(0).at(0)); 
+    row3.push_back(F.at(0).at(1));
 
-    row4.push_back(D.at(1).at(0)); 
-    row4.push_back(D.at(1).at(1));
-    row4.push_back(0); 
-    row4.push_back(0);
+    row4.push_back(E.at(1).at(0)); 
+    row4.push_back(E.at(1).at(1));
+    row4.push_back(F.at(1).at(0)); 
+    row4.push_back(F.at(1).at(1));
 
     K.push_back(row1); 
     K.push_back(row2); 
@@ -66,18 +101,7 @@ Matrix createLocalK(int element,mesh &m){
     return K;
 }
 
-Vector createLocalb(int element,mesh &m){
-    Vector b;
 
-    float f = m.getParameter(EXTERNAL_FORCE), l = m.getParameter(ELEMENT_LENGTH);
-    
-    b.push_back(f*l/2); 
-    b.push_back(f*l/2); 
-    b.push_back(0); 
-    b.push_back(0);
-
-    return b;
-}
 
 void crearSistemasLocales(mesh &m,vector<Matrix> &localKs,vector<Vector> &localbs){
     for(int i=0;i<m.getSize(ELEMENTS);i++){
